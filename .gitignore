@@ -1,0 +1,12 @@
+# Pycharm
+.idea
+__pycache__
+
+# VS Code
+.vscode/
+
+# Spyder
+.spyproject/
+
+# Mac OS-specific storage files
+.DS_Store
