@@ -13,9 +13,9 @@ if sys.version_info < (3, 7):
     print('Sorry, Python < 3.7 is not supported, please install Python 3.5.2')
     sys.exit()
 
-setup(name='intervalspaces',
+setup(name='interval-action-spaces',
       version='0.0.1',
-      packages=find_packages(),
+      packages=['interval_spaces'],
       python_requires='>=3.7',
       install_requires=read_requirements_file('requirements.txt'),
       description='Extensions to OpenAI Gym for discontinuity in action spaces.',
