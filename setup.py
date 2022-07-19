@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import sys
 from os.path import dirname, realpath
 
@@ -15,7 +15,7 @@ if sys.version_info < (3, 7):
 
 setup(name='gym_extensions',
       version='0.0.1',
-      packages=['discontinuous_action_spaces'],
+      packages=find_packages(),
       python_requires='>=3.7',
       install_requires=read_requirements_file('requirements.txt'),
       description='Extensions to OpenAI Gym for discontinuity in action spaces.',
