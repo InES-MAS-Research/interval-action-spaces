@@ -1,9 +1,9 @@
-from spaces.continuous.continuous import DiscontinuousContinuousActionSpace
+from interval_spaces.interval_space import IntervalSpace
 import math
 import numpy as np
 
 
-class BucketSpace(DiscontinuousContinuousActionSpace):
+class BucketSpace(IntervalSpace):
 
     def __init__(self, a, b, *, bucket_width=1.0, epsilon=0.01):
         super().__init__()

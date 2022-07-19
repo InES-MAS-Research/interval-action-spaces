@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import sys
 from os.path import dirname, realpath
 
@@ -13,11 +13,11 @@ if sys.version_info < (3, 7):
     print('Sorry, Python < 3.7 is not supported, please install Python 3.5.2')
     sys.exit()
 
-setup(name='interval-action-spaces',
+setup(name='interval-action-interval_spaces',
       version='0.0.1',
       packages=['interval_spaces'],
       python_requires='>=3.7',
       install_requires=read_requirements_file('requirements.txt'),
-      description='Extensions to OpenAI Gym for discontinuity in action spaces.',
+      description='Extensions to OpenAI Gym for action spaces in form of intervals.',
       url='https://github.com/InES-MAS-Research/discontinuous-action-space',
       )

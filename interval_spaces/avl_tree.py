@@ -1,4 +1,4 @@
-from spaces.continuous.continuous import DiscontinuousContinuousActionSpace
+from interval_spaces.interval_space import IntervalSpace
 
 
 class Node(object):
@@ -16,7 +16,7 @@ class Node(object):
         return self.__str__()
 
 
-class IntervalUnionTree(DiscontinuousContinuousActionSpace):
+class IntervalUnionTree(IntervalSpace):
     root_tree = None
 
     def __init__(self, x, y):
