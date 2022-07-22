@@ -126,6 +126,8 @@ class IntervalUnionTree(IntervalSpace):
             return self.smallest_interval(root.l)
 
     def insert(self, x, y, root: Node = 'root'):
+        assert y > x, 'Lower must be larger than upper bound'
+
         if root == 'root':
             root = self.root_tree
 
