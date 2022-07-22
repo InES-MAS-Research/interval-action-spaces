@@ -145,13 +145,18 @@ class IntervalUnionTree(IntervalSpace):
             root.y = max(root.y, y)
             self.size += root.y - root.x - old_size
 
-            if root.r is not None and root.y == root.r.x:
+            updated = False
+            if root.r is not None and root.y >= root.r.x:
                 root.y = root.r.y
-            root.r = self.remove(root.x, root.y, root.r)
+                updated = True
 
-            if root.l is not None and root.x == root.l.y:
+            if root.l is not None and root.x <= root.l.y:
                 root.x = root.l.x
-            root.l = self.remove(root.x, root.y, root.l)
+                updated = True
+
+            if updated:
+                root.r = self.remove(root.x, root.y, root.r)
+                root.l = self.remove(root.x, root.y, root.l)
 
         root.h = 1 + max(self.getHeight(root.l),
                          self.getHeight(root.r))
@@ -187,7 +192,7 @@ class IntervalUnionTree(IntervalSpace):
 
         if not root:
             return None
-        elif x >= root.x and y <= root.y:
+        elif (x >= root.x and y < root.y) or (x > root.x and y <= root.y):
             self.size -= root.y - x
             old_maximum = root.y
             root.y = x

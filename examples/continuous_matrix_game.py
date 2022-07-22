@@ -40,16 +40,16 @@ class ContinuousMatrixGameEnvironment(Env):
 env = ContinuousMatrixGameEnvironment()
 env.action_space.insert(1.3, 1.4)
 env.action_space.insert(5.0, 6.6)
-print(env.action_space.root_tree)
 env.action_space.insert(1.6, 1.7)
-print(env.action_space.root_tree)
 env.action_space.insert(1.9, 2.0)
+env.action_space.insert(6, 10)
+env.action_space.insert(22.4, 50.0)
 print(env.action_space.root_tree)
-env.action_space.insert(1.7, 1.9)
-print(env.action_space.root_tree)
-env.action_space.insert(1., 2.)
+env.action_space.insert(1.35, 5.0)
+
 print(env.action_space.size)
 print(env.action_space.root_tree)
+#print(env.action_space.order())
 
 while True:
     actions = {0: env.action_space.sample(), 1: env.action_space.sample()}
