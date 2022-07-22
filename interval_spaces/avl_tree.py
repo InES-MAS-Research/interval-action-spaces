@@ -1,10 +1,11 @@
 from interval_spaces.interval_space import IntervalSpace
+from decimal import *
 
 
 class Node(object):
     def __init__(self, x: float = None, y: float = None):
-        self.x = x
-        self.y = y
+        self.x: Decimal = Decimal(f'{x}')
+        self.y: Decimal = Decimal(f'{y}')
         self.l = None
         self.r = None
         self.h = 1
@@ -18,10 +19,14 @@ class Node(object):
 
 class IntervalUnionTree(IntervalSpace):
     root_tree = None
+    size: Decimal = 0
 
     def __init__(self, x, y):
         super().__init__()
+        getcontext().prec = 28
+
         self.root_tree = Node(x, y)
+        self.size = Decimal(y) - Decimal(x)
 
     def __contains__(self, item):
         return self.contains(item)
@@ -111,14 +116,25 @@ class IntervalUnionTree(IntervalSpace):
             root = self.root_tree
 
         if not root:
+            self.size += Decimal(f'{y}') - Decimal(f'{x}')
             return Node(x, y)
         elif y < root.x:
             root.l = self.insert(x, y, root.l)
         elif x > root.y:
             root.r = self.insert(x, y, root.r)
         else:
+            old_size = Decimal(f'{root.y}') - Decimal(f'{root.x}')
             root.x = min(root.x, x)
             root.y = max(root.y, y)
+            self.size += Decimal(f'{root.y}') - Decimal(f'{root.x}') - old_size
+
+            if root.r is not None and Decimal(f'{y}') == root.r.x:
+                root.y = root.r.y
+            root.r = self.remove(root.x, root.y, root.r)
+
+            if root.l is not None and Decimal(f'{x}') == root.l.y:
+                root.x = root.l.x
+            root.l = self.remove(root.x, root.y, root.l)
 
         root.h = 1 + max(self.getHeight(root.l),
                          self.getHeight(root.r))
@@ -151,14 +167,17 @@ class IntervalUnionTree(IntervalSpace):
 
         if not root:
             return None
-        elif x > root.x and y < root.y:
+        elif x >= root.x and y <= root.y:
+            self.size -= Decimal(f'{root.y}') - Decimal(f'{x}')
             old_maximum = root.y
             root.y = x
             self.insert(y, old_maximum, root)
         elif x < root.x < y < root.y:
+            self.size -= Decimal(f'{y}') - Decimal(f'{root.x}')
             root.x = y
             root.l = self.remove(x, y, root.l)
         elif root.x < x < root.y < y:
+            self.size -= Decimal(f'{root.y}') - Decimal(f'{x}')
             root.y = x
             root.r = self.remove(x, y, root.r)
         elif y < root.x:

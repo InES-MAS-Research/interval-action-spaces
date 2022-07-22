@@ -13,7 +13,7 @@ if sys.version_info < (3, 7):
     print('Sorry, Python < 3.7 is not supported, please install Python 3.5.2')
     sys.exit()
 
-setup(name='interval-action-interval_spaces',
+setup(name='interval-action-spaces',
       version='0.0.1',
       packages=['interval_spaces'],
       python_requires='>=3.7',
