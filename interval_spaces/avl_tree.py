@@ -35,6 +35,8 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
+        x = Decimal(f'{x}')
+
         if not root:
             return False
         elif root.x <= x <= root.y:
@@ -48,6 +50,8 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
+        x = Decimal(f'{x}')
+
         if x > root.y:
             return self._nearest_elements(x, x - root.y, root.y, root.r)
         elif x < root.x:
@@ -58,6 +62,10 @@ class IntervalUnionTree(IntervalSpace):
     def _nearest_elements(self, x, min_diff, min_value, root: Node = 'root'):
         if root == 'root':
             root = self.root_tree
+
+        x = Decimal(f'{x}')
+        min_diff = Decimal(f'{min_diff}')
+        min_value = Decimal(f'{min_value}')
 
         if not root:
             return [min_value]
@@ -76,11 +84,15 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
+        x = Decimal(f'{x}')
+
         return self.nearest_elements(x, root)[-1]
 
     def last_interval_before_or_within(self, x, root: Node = 'root'):
         if root == 'root':
             root = self.root_tree
+
+        x = Decimal(f'{x}')
 
         if root.x <= x <= root.y:
             return (root.x, root.y), True
@@ -93,6 +105,8 @@ class IntervalUnionTree(IntervalSpace):
     def first_interval_after_or_within(self, x, root: Node = 'root'):
         if root == 'root':
             root = self.root_tree
+
+        x = Decimal(f'{x}')
 
         if root.x <= x <= root.y:
             return (root.x, root.y), True
@@ -115,24 +129,27 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
+        x = Decimal(f'{x}')
+        y = Decimal(f'{y}')
+
         if not root:
-            self.size += Decimal(f'{y}') - Decimal(f'{x}')
+            self.size += y - x
             return Node(x, y)
         elif y < root.x:
             root.l = self.insert(x, y, root.l)
         elif x > root.y:
             root.r = self.insert(x, y, root.r)
         else:
-            old_size = Decimal(f'{root.y}') - Decimal(f'{root.x}')
+            old_size = root.y - root.x
             root.x = min(root.x, x)
             root.y = max(root.y, y)
-            self.size += Decimal(f'{root.y}') - Decimal(f'{root.x}') - old_size
+            self.size += root.y - root.x - old_size
 
-            if root.r is not None and Decimal(f'{y}') == root.r.x:
+            if root.r is not None and root.y == root.r.x:
                 root.y = root.r.y
             root.r = self.remove(root.x, root.y, root.r)
 
-            if root.l is not None and Decimal(f'{x}') == root.l.y:
+            if root.l is not None and root.x == root.l.y:
                 root.x = root.l.x
             root.l = self.remove(root.x, root.y, root.l)
 
@@ -165,19 +182,22 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
+        x = Decimal(f'{x}')
+        y = Decimal(f'{y}')
+
         if not root:
             return None
         elif x >= root.x and y <= root.y:
-            self.size -= Decimal(f'{root.y}') - Decimal(f'{x}')
+            self.size -= root.y - x
             old_maximum = root.y
             root.y = x
             self.insert(y, old_maximum, root)
         elif x < root.x < y < root.y:
-            self.size -= Decimal(f'{y}') - Decimal(f'{root.x}')
+            self.size -= y - root.x
             root.x = y
             root.l = self.remove(x, y, root.l)
         elif root.x < x < root.y < y:
-            self.size -= Decimal(f'{root.y}') - Decimal(f'{x}')
+            self.size -= root.y - x
             root.y = x
             root.r = self.remove(x, y, root.r)
         elif y < root.x:
