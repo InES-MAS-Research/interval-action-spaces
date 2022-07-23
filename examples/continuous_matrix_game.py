@@ -40,6 +40,8 @@ class ContinuousMatrixGameEnvironment(Env):
 
 
 env = ContinuousMatrixGameEnvironment()
+env.action_space.remove(0.5, 1.0)
+env.action_space.remove(0.1, 0.25)
 
 while True:
     actions = {0: env.action_space.sample(), 1: env.action_space.sample()}

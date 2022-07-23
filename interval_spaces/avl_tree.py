@@ -21,7 +21,7 @@ class Node(object):
 class IntervalUnionTree(IntervalSpace):
     root_tree = None
     size: Decimal = 0
-    draw: Decimal = None
+    draw = None
 
     def __init__(self, x, y):
         super().__init__()
@@ -188,7 +188,7 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
-        if not self.draw:
+        if self.draw is None:
             self.draw = Decimal(f'{uniform(0.0, float(self.size))}')
 
         self.draw -= root.y - root.x
@@ -200,7 +200,9 @@ class IntervalUnionTree(IntervalSpace):
                 result = self.sample(root.r)
             return result
         else:
-            return float(root.y + self.draw)
+            result = float(root.y + self.draw)
+            self.draw = None
+            return result
 
     def remove(self, x, y, root: Node = 'root', adjust_size: bool = True):
         assert y > x, 'Upper must be larger than lower bound'
@@ -213,11 +215,17 @@ class IntervalUnionTree(IntervalSpace):
 
         if not root:
             return None
-        elif (x >= root.x and y < root.y) or (x > root.x and y <= root.y):
+        elif x > root.x and y < root.y:
             self.size -= root.y - x
             old_maximum = root.y
             root.y = x
             self.insert(y, old_maximum, root)
+        elif x == root.x and y < root.y:
+            self.size -= root.y - y
+            root.x = y
+        elif x > root.x and y == root.y:
+            self.size -= x - root.x
+            root.y = x
         elif x < root.x < y < root.y:
             self.size -= y - root.x
             root.x = y
