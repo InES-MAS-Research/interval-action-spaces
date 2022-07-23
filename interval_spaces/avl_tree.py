@@ -3,15 +3,15 @@ from decimal import *
 
 
 class Node(object):
-    def __init__(self, x: float = None, y: float = None):
+    def __init__(self, x: float = None, y: float = None, left: object = None, right: object = None, height: int = 1):
         self.x: Decimal = Decimal(f'{x}')
         self.y: Decimal = Decimal(f'{y}')
-        self.l = None
-        self.r = None
-        self.h = 1
+        self.l = left
+        self.r = right
+        self.h = height
 
     def __str__(self):
-        return f'<Node ({self.x},{self.y}), left: {self.l}, right: {self.r}>'
+        return f'<Node ({float(self.x)},{float(self.y)}), height: {self.h}, left: {self.l}, right: {self.r}>'
 
     def __repr__(self):
         return self.__str__()
