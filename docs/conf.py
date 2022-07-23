@@ -4,9 +4,9 @@ sys.path.insert(0, '..')
 
 # -- Project information -----------------------------------------------------
 
-project = 'Discontinuous-Action-Spaces'
+project = 'Interval Action Spaces'
 copyright = '2021, InES'
-author = 'Michael Pernpeintner'
+author = 'Michael Pernpeintner, Tim Grams'
 
 
 # -- General configuration ---------------------------------------------------

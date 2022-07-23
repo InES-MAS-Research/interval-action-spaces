@@ -185,7 +185,7 @@ class IntervalUnionTree(IntervalSpace):
     def sample(self) -> float:
         pass
 
-    def remove(self, x, y, root: Node = 'root'):
+    def remove(self, x, y, root: Node = 'root', adjust_size: bool = True):
         if root == 'root':
             root = self.root_tree
 
@@ -202,25 +202,27 @@ class IntervalUnionTree(IntervalSpace):
         elif x < root.x < y < root.y:
             self.size -= y - root.x
             root.x = y
-            root.l = self.remove(x, y, root.l)
+            root.l = self.remove(x, y, root.l, adjust_size)
         elif root.x < x < root.y < y:
             self.size -= root.y - x
             root.y = x
-            root.r = self.remove(x, y, root.r)
+            root.r = self.remove(x, y, root.r, adjust_size)
         elif y < root.x:
-            root.l = self.remove(x, y, root.l)
+            root.l = self.remove(x, y, root.l, adjust_size)
         elif x > root.y:
-            root.r = self.remove(x, y, root.r)
+            root.r = self.remove(x, y, root.r, adjust_size)
         else:
+            if adjust_size:
+                self.size -= root.y - root.x
             if root.l is None:
-                return self.remove(x, y, root.r)
+                return self.remove(x, y, root.r, adjust_size)
             elif root.r is None:
-                return self.remove(x, y, root.l)
+                return self.remove(x, y, root.l, adjust_size)
             rgt = self.smallest_interval(root.r)
             root.x = rgt.x
             root.y = rgt.y
-            root.r = self.remove(rgt.x, rgt.y, root.r)
-            root = self.remove(x, y, root)
+            root.r = self.remove(rgt.x, rgt.y, root.r, adjust_size=False)
+            root = self.remove(x, y, root, adjust_size)
         if not root:
             return None
 
