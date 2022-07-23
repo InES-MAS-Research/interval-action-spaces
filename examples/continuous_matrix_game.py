@@ -34,6 +34,8 @@ class ContinuousMatrixGameEnvironment(Env):
         observation = [action[0], action[1]]
         rewards = {0: utility(action[0], action[1], 0), 1: utility(action[0], action[1], 1)}
 
+        self.current_step += 1
+
         return observation, rewards
 
 

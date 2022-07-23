@@ -28,10 +28,10 @@ class AVLTreeTest(test_interval_spaces.TestIntervalSpaces):
         assert repr(self.tree.root_tree) == repr(expected)
 
     def test_order_intervals(self):
-        expected = [(Decimal('0.0'), Decimal('1.0')), (Decimal('1.3'), Decimal('1.4')),
-                    (Decimal('1.42'), Decimal('1.45')), (Decimal('1.46'), Decimal('1.48')),
-                    (Decimal('1.6'), Decimal('1.7')), (Decimal('1.9'), Decimal('2.0')), (Decimal('5.0'), Decimal('10')),
-                    (Decimal('22.4'), Decimal('50.0'))]
+        expected = [(0.0, 1.0), (1.3, 1.4), (1.42, 1.45), (1.46, 1.48),
+                    (1.6, 1.7), (1.9, 2.0), (5.0, 10.0), (22.4, 50.0)]
+
+        print(self.tree.order())
 
         assert repr(self.tree.order()) == repr(expected)
 
@@ -53,3 +53,6 @@ class AVLTreeTest(test_interval_spaces.TestIntervalSpaces):
 
     def test_tree_size(self):
         assert self.tree.size == Decimal(f'{15.20}')
+
+    def test_tree_sample(self):
+        print(self.tree.sample())

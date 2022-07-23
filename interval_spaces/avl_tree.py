@@ -1,5 +1,6 @@
 from interval_spaces.interval_space import IntervalSpace
 from decimal import *
+from random import uniform
 
 
 class Node(object):
@@ -20,6 +21,7 @@ class Node(object):
 class IntervalUnionTree(IntervalSpace):
     root_tree = None
     size: Decimal = 0
+    draw: Decimal = None
 
     def __init__(self, x, y):
         super().__init__()
@@ -126,7 +128,7 @@ class IntervalUnionTree(IntervalSpace):
             return self.smallest_interval(root.l)
 
     def insert(self, x, y, root: Node = 'root'):
-        assert y > x, 'Lower must be larger than upper bound'
+        assert y > x, 'Upper must be larger than lower bound'
 
         if root == 'root':
             root = self.root_tree
@@ -182,10 +184,27 @@ class IntervalUnionTree(IntervalSpace):
         self.root_tree = root
         return root
 
-    def sample(self) -> float:
-        pass
+    def sample(self, root: Node = 'root') -> float:
+        if root == 'root':
+            root = self.root_tree
+
+        if not self.draw:
+            self.draw = Decimal(f'{uniform(0.0, float(self.size))}')
+
+        self.draw -= root.y - root.x
+        if self.draw > 0:
+            result = None
+            if root.l is not None:
+                result = self.sample(root.l)
+            if not result and root.r is not None:
+                result = self.sample(root.r)
+            return result
+        else:
+            return float(root.y + self.draw)
 
     def remove(self, x, y, root: Node = 'root', adjust_size: bool = True):
+        assert y > x, 'Upper must be larger than lower bound'
+
         if root == 'root':
             root = self.root_tree
 
@@ -301,7 +320,7 @@ class IntervalUnionTree(IntervalSpace):
         ordered = []
         if root.l is not None:
             ordered = ordered + self.order(root.l)
-        ordered.append((root.x, root.y))
+        ordered.append((float(root.x), float(root.y)))
         if root.r is not None:
             ordered = ordered + self.order(root.r)
         return ordered
