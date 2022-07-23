@@ -135,7 +135,6 @@ class IntervalUnionTree(IntervalSpace):
 
         x = Decimal(f'{x}')
         y = Decimal(f'{y}')
-
         if not root:
             self.size += y - x
             return Node(x, y)
@@ -168,18 +167,22 @@ class IntervalUnionTree(IntervalSpace):
         b = self.getBal(root)
 
         if b > 1 and y < root.l.x:
-            return self.rRotate(root)
+            self.root_tree = self.rRotate(root)
+            return self.root_tree
 
         if b < -1 and x > root.r.y:
-            return self.lRotate(root)
+            self.root_tree = self.lRotate(root)
+            return self.root_tree
 
         if b > 1 and x > root.l.y:
             root.l = self.lRotate(root.l)
-            return self.rRotate(root)
+            self.root_tree = self.rRotate(root)
+            return self.root_tree
 
         if b < -1 and y < root.r.x:
             root.r = self.rRotate(root.r)
-            return self.lRotate(root)
+            self.root_tree = self.lRotate(root)
+            return self.root_tree
 
         self.root_tree = root
         return root
@@ -219,7 +222,7 @@ class IntervalUnionTree(IntervalSpace):
             self.size -= root.y - x
             old_maximum = root.y
             root.y = x
-            self.insert(y, old_maximum, root)
+            root = self.insert(y, old_maximum, root)
         elif x == root.x and y < root.y:
             self.size -= root.y - y
             root.x = y
