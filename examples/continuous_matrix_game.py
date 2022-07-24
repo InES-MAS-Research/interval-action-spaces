@@ -4,7 +4,7 @@ from gym import Env
 from gym.spaces import Box
 from random import uniform
 
-num_steps = 10
+num_steps = 20
 
 payoffs = np.array([[[2, 2], [8, 1]],
                     [[3, 3], [1, 6]]])
@@ -41,8 +41,10 @@ env = ContinuousMatrixGameEnvironment()
 current_step = 0
 next_step = 'remove'
 while True:
-    r1 = uniform(0.0, 1.0)
-    r2 = uniform(0.0, 1.0)
+    print(f'\n Round {current_step}')
+
+    r1 = round(uniform(0.0, 1.0), 2)
+    r2 = round(uniform(0.0, 1.0), 2)
 
     if next_step == 'insert':
         print(f'Expanding action space  by [{min(r1, r2)}, {max(r1, r2)}]')
@@ -54,8 +56,10 @@ while True:
         next_step = 'insert'
 
     print(f'New action space: {env.action_space.order()}')
+    print(f'Action space size: {env.action_space.size}')
 
     actions = {0: env.action_space.sample(), 1: env.action_space.sample()}
+    print(f'Actions: {actions}')
     results = env.step(actions)
     print(f'Step: {results}')
 
@@ -63,4 +67,4 @@ while True:
     if current_step >= num_steps:
         break
 
-print('Finished!')
+print('\n Finished!')

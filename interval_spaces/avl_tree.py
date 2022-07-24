@@ -160,6 +160,7 @@ class IntervalUnionTree(IntervalSpace):
             if updated:
                 root.r = self.remove(root.x, root.y, root.r)
                 root.l = self.remove(root.x, root.y, root.l)
+                root = self.insert(x, y, root)
 
         root.h = 1 + max(self.getHeight(root.l),
                          self.getHeight(root.r))
