@@ -41,10 +41,12 @@ env = ContinuousMatrixGameEnvironment()
 current_step = 0
 next_step = 'remove'
 while True:
-    print(f'\n Round {current_step}')
-
     r1 = round(uniform(0.0, 1.0), 2)
     r2 = round(uniform(0.0, 1.0), 2)
+    if r1 == r2:
+        continue
+
+    print(f'\n Round {current_step}')
 
     if next_step == 'insert':
         print(f'Expanding action space  by [{min(r1, r2)}, {max(r1, r2)}]')

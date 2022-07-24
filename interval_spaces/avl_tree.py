@@ -150,10 +150,12 @@ class IntervalUnionTree(IntervalSpace):
 
             updated = False
             if root.r is not None and root.y >= root.r.x:
+                self.size -= root.y - root.r.y
                 root.y = root.r.y
                 updated = True
 
             if root.l is not None and root.x <= root.l.y:
+                self.size -= root.l.x - root.x
                 root.x = root.l.x
                 updated = True
 
