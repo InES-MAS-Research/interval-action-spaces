@@ -159,9 +159,9 @@ class IntervalUnionTree(IntervalSpace):
                 root.x = root.l.x
                 updated = True
 
+            root.r = self.remove(root.x, root.y, root.r)
+            root.l = self.remove(root.x, root.y, root.l)
             if updated:
-                root.r = self.remove(root.x, root.y, root.r)
-                root.l = self.remove(root.x, root.y, root.l)
                 root = self.insert(x, y, root)
 
         root.h = 1 + max(self.getHeight(root.l),
@@ -265,18 +265,22 @@ class IntervalUnionTree(IntervalSpace):
         b = self.getBal(root)
 
         if b > 1 and self.getBal(root.l) >= 0:
-            return self.rRotate(Node(None, None))
+            self.root_tree = self.rRotate(Node(None, None))
+            return self.root_tree
 
         if b < -1 and self.getBal(root.r) <= 0:
-            return self.lRotate(root)
+            self.root_tree = self.lRotate(root)
+            return self.root_tree
 
         if b > 1 and self.getBal(root.l) < 0:
             root.l = self.lRotate(root.l)
-            return self.rRotate(root)
+            self.root_tree = self.rRotate(root)
+            return self.root_tree
 
         if b < -1 and self.getBal(root.r) > 0:
             root.r = self.rRotate(root.r)
-            return self.lRotate(root)
+            self.root_tree = self.lRotate(root)
+            return self.root_tree
 
         self.root_tree = root
         return root
