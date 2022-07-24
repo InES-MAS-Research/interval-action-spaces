@@ -227,10 +227,10 @@ class IntervalUnionTree(IntervalSpace):
             root.y = x
             root = self.insert(y, old_maximum, root)
         elif x == root.x and y < root.y:
-            self.size -= root.y - y
+            self.size -= y - x
             root.x = y
         elif x > root.x and y == root.y:
-            self.size -= x - root.x
+            self.size -= y - x
             root.y = x
         elif x < root.x < y < root.y:
             self.size -= y - root.x
