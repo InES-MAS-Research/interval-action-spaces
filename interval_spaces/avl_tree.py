@@ -240,9 +240,9 @@ class IntervalUnionTree(IntervalSpace):
             self.size -= root.y - x
             root.y = x
             root.r = self.remove(x, y, root.r, adjust_size)
-        elif y < root.x:
+        elif y <= root.x:
             root.l = self.remove(x, y, root.l, adjust_size)
-        elif x > root.y:
+        elif x >= root.y:
             root.r = self.remove(x, y, root.r, adjust_size)
         else:
             if adjust_size:
@@ -250,12 +250,17 @@ class IntervalUnionTree(IntervalSpace):
             if root.l is None:
                 return self.remove(x, y, root.r, adjust_size)
             elif root.r is None:
+                print('going left')
                 return self.remove(x, y, root.l, adjust_size)
             rgt = self.smallest_interval(root.r)
             root.x = rgt.x
             root.y = rgt.y
             root.r = self.remove(rgt.x, rgt.y, root.r, adjust_size=False)
+            print('hi')
+            print(root)
             root = self.remove(x, y, root, adjust_size)
+            print('final')
+            print(root)
         if not root:
             return None
 
