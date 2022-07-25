@@ -1,10 +1,10 @@
 from decimal import Decimal
-from tests import test_interval_spaces
-from interval_spaces.avl_tree import IntervalUnionTree, Node
+from tests import test_interval_space
+from interval_spaces.tree_space import TreeSpace, Node
 
 
-class AVLTreeTest(test_interval_spaces.TestIntervalSpaces):
-    tree = IntervalUnionTree(0.0, 1.0)
+class TreeSpaceTest(test_interval_space.TestIntervalSpaces):
+    tree = TreeSpace(0.0, 1.0)
 
     def test_insert_intervals(self):
         expected = Node(1.9, 2.0, height=4,

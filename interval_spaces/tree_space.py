@@ -4,7 +4,16 @@ from random import uniform
 
 
 class Node(object):
+    """ Node in the AVL tree which represents a valid interval """
+
     def __init__(self, x: float = None, y: float = None, left: object = None, right: object = None, height: int = 1):
+        """
+        Args:
+            x (float): Lower bound of the interval
+            y (float): Upper bound of the interval
+            left (Node): Left, smaller interval
+            right (Node): Right, larger interval
+        """
         self.x: Decimal = Decimal(f'{x}') if x is not None else None
         self.y: Decimal = Decimal(f'{y}') if y is not None else None
         self.l = left
@@ -18,12 +27,19 @@ class Node(object):
         return self.__str__()
 
 
-class IntervalUnionTree(IntervalSpace):
+class TreeSpace(IntervalSpace):
+    """ Interval Action Space as AVL tree """
+
     root_tree = None
     size: Decimal = 0
     draw = None
 
-    def __init__(self, x, y):
+    def __init__(self, x: float, y: float):
+        """
+        Args:
+            x (float): Lower bound of the initial interval
+            y (float): Upper bound of the initial interval
+        """
         super().__init__()
         getcontext().prec = 28
 
@@ -33,7 +49,16 @@ class IntervalUnionTree(IntervalSpace):
     def __contains__(self, item):
         return self.contains(item)
 
-    def contains(self, x, root: Node = 'root'):
+    def contains(self, x, root: object = 'root'):
+        """ Determines if a number is part of the action space
+
+        Args:
+            x: Number
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            Boolean indicating if it is part of the action space
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -49,6 +74,15 @@ class IntervalUnionTree(IntervalSpace):
             return self.contains(x, root.r)
 
     def nearest_elements(self, x, root: Node = 'root'):
+        """ Finds nearest actions for a number in the action space
+
+        Args:
+            x: Number
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            Nearest elements in the action space. It is the number itself if it is valid.
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -83,6 +117,15 @@ class IntervalUnionTree(IntervalSpace):
             return x
 
     def nearest_element(self, x, root: Node = 'root'):
+        """ Finds nearest action for a number in the action space. Larger actions preferred.
+
+        Args:
+            x: Number
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            Nearest element in the action space. It is the number itself if it is valid.
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -91,6 +134,18 @@ class IntervalUnionTree(IntervalSpace):
         return self.nearest_elements(x, root)[-1]
 
     def last_interval_before_or_within(self, x, root: Node = 'root'):
+        """ Returns the last interval before or within a number
+
+        Args:
+            x: Number
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            Tuple containing the lower and upper boundaries of the interval and a variable indicating
+            if the number lies in the interval. For example:
+
+            (root.x, root.y), True
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -105,6 +160,18 @@ class IntervalUnionTree(IntervalSpace):
                 (root.x, root.y), False) if x < root.y else ((None, None), False)
 
     def first_interval_after_or_within(self, x, root: Node = 'root'):
+        """ Returns the first interval after or within a number
+
+        Args:
+            x: Number
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            Tuple containing the lower and upper boundaries of the interval and a variable indicating
+            if the number lies in the interval. For example:
+
+            (root.x, root.y), True
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -119,6 +186,14 @@ class IntervalUnionTree(IntervalSpace):
                 (root.x, root.y), False) if x > root.x else ((None, None), False)
 
     def smallest_interval(self, root: Node = 'root'):
+        """ Returns the Node of the smallest interval
+
+        Args:
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            Node of the smallest interval
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -128,6 +203,16 @@ class IntervalUnionTree(IntervalSpace):
             return self.smallest_interval(root.l)
 
     def insert(self, x, y, root: Node = 'root'):
+        """ Adds an interval to the action space
+
+        Args:
+            x: Lower bound of the interval
+            y: Upper bound of the interval
+            root: Node to start the insertion from or 'root' for inserting over the whole tree, default is 'root'
+
+        Returns:
+            Updated root node of the action space
+        """
         assert y > x, 'Upper must be larger than lower bound'
 
         if root == 'root':
@@ -195,6 +280,14 @@ class IntervalUnionTree(IntervalSpace):
         return root
 
     def sample(self, root: Node = 'root') -> float:
+        """ Sample a random action from a uniform distribution over the action space
+
+        Args:
+            root: Root node of the action space, default is 'root'
+
+        Returns:
+            Sampled action as a float
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -218,6 +311,16 @@ class IntervalUnionTree(IntervalSpace):
             return result
 
     def remove(self, x, y, root: Node = 'root', adjust_size: bool = True):
+        """ Removes an interval from the action space
+
+        Args:
+            x: Lower bound of the interval
+            y: Upper bound of the interval
+            root: Node to start the removal from or 'root' for removing over the whole tree, default is 'root'
+
+        Returns:
+            Updated root node of the action space
+        """
         assert y > x, 'Upper must be larger than lower bound'
 
         if root == 'root':
@@ -297,6 +400,14 @@ class IntervalUnionTree(IntervalSpace):
         return root
 
     def lRotate(self, z: Node):
+        """ Performs a left rotation. Switches roles of parent and child nodes.
+
+        Args:
+            z (Node): Parent node for the rotation
+
+        Returns:
+            Updated parent Node
+        """
         y = z.r
         T2 = y.l
 
@@ -311,6 +422,14 @@ class IntervalUnionTree(IntervalSpace):
         return y
 
     def rRotate(self, z: Node):
+        """ Performs a right rotation. Switches roles of parent and child nodes.
+
+        Args:
+            z (Node): Parent node for the rotation
+
+        Returns:
+            Updated parent Node
+        """
         y = z.l
         T3 = y.r
 
@@ -325,6 +444,14 @@ class IntervalUnionTree(IntervalSpace):
         return y
 
     def getHeight(self, root: Node = 'root'):
+        """ Returns the height of a Node
+
+        Args:
+            root: Node to return the height from or 'root' for the height of the whole tree, default is 'root'
+
+        Returns:
+            Integer indicating the height
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -334,6 +461,15 @@ class IntervalUnionTree(IntervalSpace):
         return root.h
 
     def getBal(self, root: Node = 'root'):
+        """ Calculates balance factor
+
+        Args:
+            root: Node to calculate the balance factor for or 'root' for the balance factor of the whole tree,
+            default is 'root'
+
+        Returns:
+            Integer indicating the balance factor
+        """
         if root == 'root':
             root = self.root_tree
 
@@ -343,6 +479,16 @@ class IntervalUnionTree(IntervalSpace):
         return self.getHeight(root.l) - self.getHeight(root.r)
 
     def order(self, root: Node = 'root'):
+        """ Returns all intervals of the action space ordered
+
+        Args:
+            root: Node to start the search from or 'root' for searching the whole tree, default is 'root'
+
+        Returns:
+            List of tuples containing the ordered intervals. For example:
+
+            [(0.1,0.5), (0.7,0.9)]
+        """
         if root == 'root':
             root = self.root_tree
 

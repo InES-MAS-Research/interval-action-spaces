@@ -1,8 +1,8 @@
-from tests import test_interval_spaces
+from tests import test_interval_space
 from interval_spaces.bucket_space import BucketSpace
 
 
-class AVLTreeTest(test_interval_spaces.TestIntervalSpaces):
+class AVLTreeTest(test_interval_space.TestIntervalSpaces):
 
     tree = BucketSpace(0.0, 1.0)
 

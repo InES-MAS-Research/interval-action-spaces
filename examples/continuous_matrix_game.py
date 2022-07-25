@@ -1,4 +1,4 @@
-from interval_spaces.avl_tree import IntervalUnionTree
+from interval_spaces.tree_space import TreeSpace
 import numpy as np
 from gym import Env
 from gym.spaces import Box
@@ -24,7 +24,7 @@ class ContinuousMatrixGameEnvironment(Env):
         self.observation_shape = (0.0, 10.0, 2)
         self.observation_space = Box(0.0, 10.0, shape=(2,))
 
-        self.action_space: IntervalUnionTree = IntervalUnionTree(0.0, 1.0)
+        self.action_space: TreeSpace = TreeSpace(0.0, 1.0)
 
     def render(self, mode="human"):
         print(payoffs)
