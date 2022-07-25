@@ -202,7 +202,7 @@ class TreeSpace(IntervalSpace):
         else:
             return self.smallest_interval(root.l)
 
-    def insert(self, x, y, root: Node = 'root'):
+    def add(self, x, y, root: Node = 'root'):
         """ Adds an interval to the action space
 
         Args:
@@ -478,7 +478,7 @@ class TreeSpace(IntervalSpace):
 
         return self.getHeight(root.l) - self.getHeight(root.r)
 
-    def order(self, root: Node = 'root'):
+    def intervals(self, root: Node = 'root'):
         """ Returns all intervals of the action space ordered
 
         Args:
