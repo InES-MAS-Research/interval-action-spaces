@@ -28,9 +28,7 @@ Then install package.
 Usage
 #####
   
-.. code:: bash
-
-	import interval_spaces
+            >>> from src.hunter import Hunter
     
 More information can be found in the `documentation <https://interval-action-spaces.readthedocs.io/en/latest/>`__.
 
