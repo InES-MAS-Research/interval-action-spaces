@@ -23,12 +23,12 @@ Then install package.
 	
 .. code:: bash
 
-	~$ pip install -r requirements.txt
+	~$ pip install .
     
 Usage
 #####
   
-            >>> from src.hunter import Hunter
+            >>> import interval_spaces
     
 More information can be found in the `documentation <https://interval-action-spaces.readthedocs.io/en/latest/>`__.
 
