@@ -12,7 +12,7 @@ class Node(object):
         self.h = height
 
     def __str__(self):
-        return f'<Node ({float(self.x)},{float(self.y)}), height: {self.h}, left: {self.l}, right: {self.r}>'
+        return f'<Node ({self.x},{self.y}), height: {self.h}, left: {self.l}, right: {self.r}>'
 
     def __repr__(self):
         return self.__str__()
@@ -169,20 +169,20 @@ class IntervalUnionTree(IntervalSpace):
 
         b = self.getBal(root)
 
-        if b > 1 and y < root.l.x:
+        if b > 1 and y < root.l.x and self.getBal(root.l) > 0:
             self.root_tree = self.rRotate(root)
             return self.root_tree
 
-        if b < -1 and x > root.r.y:
+        if b < -1 and x > root.r.y and self.getBal(root.r) < 0:
             self.root_tree = self.lRotate(root)
             return self.root_tree
 
-        if b > 1 and x > root.l.y:
+        if b > 1 and x > root.l.y and self.getBal(root.l) < 0:
             root.l = self.lRotate(root.l)
             self.root_tree = self.rRotate(root)
             return self.root_tree
 
-        if b < -1 and y < root.r.x:
+        if b < -1 and y < root.r.x and self.getBal(root.r) > 0:
             root.r = self.rRotate(root.r)
             self.root_tree = self.lRotate(root)
             return self.root_tree
@@ -264,11 +264,11 @@ class IntervalUnionTree(IntervalSpace):
 
         b = self.getBal(root)
 
-        if b > 1 and self.getBal(root.l) >= 0:
-            self.root_tree = self.rRotate(Node(None, None))
+        if b > 1 and self.getBal(root.l) > 0:
+            self.root_tree = self.rRotate(root)
             return self.root_tree
 
-        if b < -1 and self.getBal(root.r) <= 0:
+        if b < -1 and self.getBal(root.r) < 0:
             self.root_tree = self.lRotate(root)
             return self.root_tree
 
