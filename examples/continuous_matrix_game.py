@@ -50,14 +50,14 @@ while True:
 
     if next_step == 'insert':
         print(f'Expanding action space  by [{min(r1, r2)}, {max(r1, r2)}]')
-        env.action_space.insert(min(r1, r2), max(r1, r2))
+        env.action_space.add(min(r1, r2), max(r1, r2))
         next_step = 'remove'
     else:
         print(f'Reducing action space  by [{min(r1, r2)}, {max(r1, r2)}]')
         env.action_space.remove(min(r1, r2), max(r1, r2))
         next_step = 'insert'
 
-    print(f'New action space: {env.action_space.order()}')
+    print(f'New action space: {env.action_space.intervals()}')
     print(f'Action space size: {env.action_space.size}')
 
     actions = {0: env.action_space.sample(), 1: env.action_space.sample()}

@@ -228,9 +228,9 @@ class TreeSpace(IntervalSpace):
             self.size += y - x
             return Node(x, y)
         elif y < root.x:
-            root.l = self.insert(x, y, root.l)
+            root.l = self.add(x, y, root.l)
         elif x > root.y:
-            root.r = self.insert(x, y, root.r)
+            root.r = self.add(x, y, root.r)
         else:
             old_size = root.y - root.x
             root.x = min(root.x, x)
@@ -251,7 +251,7 @@ class TreeSpace(IntervalSpace):
             root.r = self.remove(root.x, root.y, root.r)
             root.l = self.remove(root.x, root.y, root.l)
             if updated:
-                root = self.insert(x, y, root)
+                root = self.add(x, y, root)
 
         root.h = 1 + max(self.getHeight(root.l),
                          self.getHeight(root.r))
@@ -337,7 +337,7 @@ class TreeSpace(IntervalSpace):
             self.size -= root.y - x
             old_maximum = root.y
             root.y = x
-            root = self.insert(y, old_maximum, root)
+            root = self.add(y, old_maximum, root)
         elif x == root.x and y < root.y:
             self.size -= y - x
             root.x = y
@@ -497,14 +497,14 @@ class TreeSpace(IntervalSpace):
 
         ordered = []
         if root.l is not None:
-            ordered = ordered + self.order(root.l)
+            ordered = ordered + self.intervals(root.l)
         ordered.append((float(root.x), float(root.y)))
         if root.r is not None:
-            ordered = ordered + self.order(root.r)
+            ordered = ordered + self.intervals(root.r)
         return ordered
 
     def __str__(self):
-        return f'<IntervalUnionTree>'
+        return f'<TreeSpace>'
 
     def __repr__(self):
         return self.__str__()
