@@ -5,8 +5,8 @@ from random import uniform
 
 class Node(object):
     def __init__(self, x: float = None, y: float = None, left: object = None, right: object = None, height: int = 1):
-        self.x: Decimal = Decimal(f'{x}')
-        self.y: Decimal = Decimal(f'{y}')
+        self.x: Decimal = Decimal(f'{x}') if x is not None else None
+        self.y: Decimal = Decimal(f'{y}') if y is not None else None
         self.l = left
         self.r = right
         self.h = height
@@ -250,17 +250,12 @@ class IntervalUnionTree(IntervalSpace):
             if root.l is None:
                 return self.remove(x, y, root.r, adjust_size)
             elif root.r is None:
-                print('going left')
                 return self.remove(x, y, root.l, adjust_size)
             rgt = self.smallest_interval(root.r)
             root.x = rgt.x
             root.y = rgt.y
             root.r = self.remove(rgt.x, rgt.y, root.r, adjust_size=False)
-            print('hi')
-            print(root)
             root = self.remove(x, y, root, adjust_size)
-            print('final')
-            print(root)
         if not root:
             return None
 
