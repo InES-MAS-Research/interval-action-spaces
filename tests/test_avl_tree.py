@@ -20,7 +20,7 @@ class AVLTreeTest(test_interval_spaces.TestIntervalSpaces):
         self.tree.insert(5.0, 6.6)
         self.tree.insert(1.6, 1.7)
         self.tree.insert(1.9, 2.0)
-        self.tree.insert(6, 10)
+        self.tree.insert(6.0, 10.0)
         self.tree.insert(22.4, 50.0)
         self.tree.insert(1.42, 1.45)
         self.tree.insert(1.46, 1.48)

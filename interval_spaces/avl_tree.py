@@ -248,9 +248,11 @@ class IntervalUnionTree(IntervalSpace):
             if adjust_size:
                 self.size -= root.y - root.x
             if root.l is None:
-                return self.remove(x, y, root.r, adjust_size)
+                self.root_tree = self.remove(x, y, root.r, adjust_size)
+                return self.root_tree
             elif root.r is None:
-                return self.remove(x, y, root.l, adjust_size)
+                self.root_tree = self.remove(x, y, root.l, adjust_size)
+                return self.root_tree
             rgt = self.smallest_interval(root.r)
             root.x = rgt.x
             root.y = rgt.y
