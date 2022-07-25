@@ -132,6 +132,10 @@ class IntervalUnionTree(IntervalSpace):
 
         if root == 'root':
             root = self.root_tree
+            if root is None:
+                self.root_tree = Node(x, y)
+                self.size += y - x
+                return self.root_tree
 
         x = Decimal(f'{x}')
         y = Decimal(f'{y}')
@@ -194,6 +198,9 @@ class IntervalUnionTree(IntervalSpace):
         if root == 'root':
             root = self.root_tree
 
+        if root is None:
+            raise Exception('Empty Action Space')
+
         if self.draw is None:
             self.draw = Decimal(f'{uniform(0.0, float(self.size))}')
 
@@ -215,6 +222,8 @@ class IntervalUnionTree(IntervalSpace):
 
         if root == 'root':
             root = self.root_tree
+            if root is None:
+                return root
 
         x = Decimal(f'{x}')
         y = Decimal(f'{y}')
@@ -336,6 +345,9 @@ class IntervalUnionTree(IntervalSpace):
     def order(self, root: Node = 'root'):
         if root == 'root':
             root = self.root_tree
+
+        if root is None:
+            return []
 
         ordered = []
         if root.l is not None:

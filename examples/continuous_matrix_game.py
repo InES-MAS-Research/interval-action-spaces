@@ -4,7 +4,7 @@ from gym import Env
 from gym.spaces import Box
 from random import uniform
 
-num_steps = 20
+num_steps = 100
 
 payoffs = np.array([[[2, 2], [8, 1]],
                     [[3, 3], [1, 6]]])
