@@ -16,24 +16,24 @@ class TreeSpaceTest(test_interval_space.TestIntervalSpaces):
                         right=Node(5.0, 10.0, height=2,
                                    right=Node(22.4, 50.0, height=1)))
 
-        self.tree.insert(1.3, 1.4)
-        self.tree.insert(5.0, 6.6)
-        self.tree.insert(1.6, 1.7)
-        self.tree.insert(1.9, 2.0)
-        self.tree.insert(6.0, 10.0)
-        self.tree.insert(22.4, 50.0)
-        self.tree.insert(1.42, 1.45)
-        self.tree.insert(1.46, 1.48)
+        self.tree.add(1.3, 1.4)
+        self.tree.add(5.0, 6.6)
+        self.tree.add(1.6, 1.7)
+        self.tree.add(1.9, 2.0)
+        self.tree.add(6.0, 10.0)
+        self.tree.add(22.4, 50.0)
+        self.tree.add(1.42, 1.45)
+        self.tree.add(1.46, 1.48)
 
         assert repr(self.tree.root_tree) == repr(expected)
 
-    def test_order_intervals(self):
+    def test_intervals(self):
         expected = [(0.0, 1.0), (1.3, 1.4), (1.42, 1.45), (1.46, 1.48),
                     (1.6, 1.7), (1.9, 2.0), (5.0, 10.0), (22.4, 50.0)]
 
-        print(self.tree.order())
+        print(self.tree.intervals())
 
-        assert repr(self.tree.order()) == repr(expected)
+        assert repr(self.tree.intervals()) == repr(expected)
 
     def test_remove_intervals(self):
         expected = Node(1.95, 2.0, height=3,
