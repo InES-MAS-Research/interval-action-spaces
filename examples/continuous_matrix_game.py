@@ -7,7 +7,7 @@ from random import uniform
 num_steps = 100
 
 payoffs = np.array([[[2, 2], [8, 1]],
-                    [[3, 3], [1, 6]]])
+                    [[3, 3], [1, 8]]])
 
 
 def utility(x1, x2, agent):
