@@ -1,18 +1,20 @@
 from interval_spaces.interval_space import IntervalSpace
 import math
 import numpy as np
+from decimal import Decimal
+from random import uniform
 
 
 class BucketSpace(IntervalSpace):
 
     def __init__(self, a, b, *, bucket_width=1.0, epsilon=0.01):
         super().__init__()
-        self.a, self.b, self.bucket_width, self.epsilon = a, b, bucket_width, epsilon
-        self.number_of_buckets = math.ceil((b - a) / bucket_width)
+        self.a, self.b, self.bucket_width, self.epsilon = Decimal(f'{a}'), Decimal(f'{b}'), Decimal(f'{bucket_width}'), Decimal(f'{epsilon}')
+        self.number_of_buckets = math.ceil((self.b - self.a) / self.bucket_width)
         self.buckets = np.ones((self.number_of_buckets,), dtype=bool)
 
     def __str__(self):
-        intervals = ' '.join(f'[{a}, {b})' for a, b in self.intervals) if self.intervals else '()'
+        intervals = ' '.join(f'[{float(a)}, {float(b)})' for a, b in self.intervals) if self.intervals else '()'
         return f'<BucketSpace {intervals}>'
 
     def __repr__(self):
@@ -27,8 +29,19 @@ class BucketSpace(IntervalSpace):
     def contains(self, x):
         return False if x < self.a or x >= self.b else self.buckets[self._bucket(x)]
 
-    def sample(self) -> float:
-        raise NotImplementedError
+    def sample(self):
+        if not self.intervals:
+            return None
+        else:
+            x = Decimal(f'{uniform(0.0, float(self.b - self.a))}')
+
+            for i, (a, b) in enumerate(self.intervals):
+                if x > Decimal(b) - Decimal(a):
+                    x -= Decimal(b) - Decimal(a)
+                else:
+                    return Decimal(a) + x
+
+        return self.intervals[-1][1]
 
     def clone(self):
         space = BucketSpace(self.a, self.b, bucket_width=self.bucket_width, epsilon=self.epsilon)
@@ -41,12 +54,16 @@ class BucketSpace(IntervalSpace):
         return space
 
     def remove(self, x, with_epsilon=True):
+        x = Decimal(f'{x}')
+
         if with_epsilon:
             self._set(x, False)
         else:
             self.buckets[self._bucket(x)] = False
 
     def add(self, x, with_epsilon=True):
+        x = Decimal(f'{x}')
+
         if with_epsilon:
             self._set(x)
         else:
@@ -60,10 +77,10 @@ class BucketSpace(IntervalSpace):
                 if self.buckets[i]:
                     a = self.a + i * self.bucket_width
             elif not self.buckets[i]:
-                intervals.append((a, self.a + i * self.bucket_width))
+                intervals.append((float(a), float(self.a + i * self.bucket_width)))
                 a = None
             elif i == self.number_of_buckets - 1:
-                intervals.append((a, self.b))
+                intervals.append((float(a), float(self.b)))
 
         return intervals
 
